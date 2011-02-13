@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs
+    title="reddit: the voice of the internet"
+    title_url="http://igreddit.appspot.com"
+    description="reddit in your google so you can google while you reddit."
+    author="Andrew McCafferty"
+    author_email="andrew.mccafferty+gg@gmail.com"
+    screenshot="http://igreddit.appspot.com/screenshot.png"
+    thumbnail="http://igreddit.appspot.com/thumb.png"
+    height="500"
+    scrolling="true"
+    directory_title="IG Reddit"/>
+  <UserPref name="subreddits" urlparam="sr" display_name="Add Subreddit: /r/" datatype="list" required="true" default_value="programming|technology"/>
+  <UserPref name="width" urlparam="w" display_name="Headline width (chars): " datatype="string" required="true" default_value="60"/>
+  <UserPref name="imgur" display_name="Open Imgur links in: " datatype="enum" default_value="1">
+    <EnumValue value="1" display_value="Imgur"/>
+    <EnumValue value="2" display_value="Mirur"/>
+  </UserPref>
+  <Content type="url" href="http://igreddit.appspot.com" />
+</Module>

@@ -1,0 +1,38 @@
+<html>
+<head>
+<title>IGReddit - reddit in your google so you can google while you reddit.</title>
+<link rel="stylesheet" type="text/css" href="css/screen.css" />
+</head>
+<body>
+<div id="content">
+
+  <ul id="subreddits">
+    {% ifequal current_feed 'all' %}
+      <li class="active"><a href="/?r=all&up_subreddits={{ link_subreddits }}&up_imgur={{ link_imgur }}&up_width={{ width }}">all</a></li>
+    {% else %}
+      <li><a href="/?r=all&up_subreddits={{ link_subreddits }}&up_imgur={{ link_imgur }}&up_width={{ width }}">all</a></li>
+    {% endifequal %}
+
+    {% if subreddits %}
+      {% for subreddit in subreddits %}
+        {% ifequal subreddit current_feed %}
+          <li class="active"><a href="?r={{ subreddit }}&up_subreddits={{ link_subreddits }}&up_imgur={{ link_imgur }}&up_width={{ width }}">{{ subreddit }}</a></li>
+        {% else %}
+          <li><a href="?r={{ subreddit }}&up_subreddits={{ link_subreddits }}&up_imgur={{ link_imgur }}&up_width={{ width }}">{{ subreddit }}</a></li>
+        {% endifequal %}
+      {% endfor %}
+    {% endif %}
+  </ul>
+
+  <table>
+    {% for story in stories %}
+      <tr>
+        <td class="external_link"><a href="{{ story.external_link }}" target="_blank" title="{{ full_title }}">{{ story.fixed_width_title }}</a></td>
+        <td class="comment_link"><a href="{{ story.comment_link }}" target="_blank">[{{ story.comment_count }}]</a></td>
+      </tr>
+    {% endfor %}
+  </table>
+
+</div>
+</body>
+</html>
