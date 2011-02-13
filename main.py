@@ -28,6 +28,7 @@ class MainHandler(webapp.RequestHandler):
   def get(self):
       
       # Incoming url parameters
+      # iGoogle prepends var names with 'up_' for some reason...
       subreddits = self.request.get('up_subreddits')    # Pipe separated list of subreddits for top menu
       width = self.request.get('up_width', '500')       # Truncate headline chars, default 500
       imgur_switch = self.request.get('up_imgur', 1)    # Imgur mirror, 1=imgur, 2=mirur, 3=filmot
@@ -43,7 +44,7 @@ class MainHandler(webapp.RequestHandler):
 
         comment_count = self.get_comment_count(entry.summary_detail)
   
-        # Extract the external link url, and transform and imgur links to requested mirror
+        # Extract the external link url, and transform imgur links to requested mirror
         external_link = self.transform_url(self.get_external_link(entry.summary_detail), int(imgur_switch))
 
         # Build a hash object for each story...
@@ -58,7 +59,8 @@ class MainHandler(webapp.RequestHandler):
         # ... and append to the stories list
         stories.append(parsed_story_hash)
 
-      # Set template data for view
+      # The main data is 'stories'.  Everything else is 
+      # there to persist the URL parameters.
       template_data = {
         'subreddits' : subreddits.split('|'),
         'link_subreddits' : subreddits,
@@ -68,6 +70,7 @@ class MainHandler(webapp.RequestHandler):
         'stories' : stories
       }
       
+      # Finally, render the template with the data
       path = os.path.join(os.path.dirname(__file__), 'index.html')
       self.response.out.write(template.render(path, template_data))
 

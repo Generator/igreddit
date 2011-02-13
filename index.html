@@ -28,7 +28,7 @@
     {% for story in stories %}
       <tr class="{% cycle even,odd %}">
         <td class="external_link"><a href="{{ story.external_link }}" target="_blank" title="{{ full_title }}">{{ story.fixed_width_title }}</a></td>
-        <td class="comment_link"><a href="{{ story.comment_link }}" target="_blank">[{{ story.comment_count }}]</a></td>
+        <td class="comment_link"><a href="{{ story.comment_link }}" target="_blank">{{ story.comment_count }}</a></td>
       </tr>
     {% endfor %}
   </table>

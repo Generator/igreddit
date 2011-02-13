@@ -77,5 +77,19 @@
 
   td.comment_link {
     vertical-align: center;
+    text-align: right;
     padding-right: 5px;
+  }
+
+  td.comment_link a {
+    background: #346faa;
+    color: #fff;
+    text-decoration: none;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    padding: 1px 3px 1px 3px;
+  }
+
+  td.comment_link a:hover {
+    background: #ff4500;
   }
