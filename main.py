@@ -18,10 +18,14 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from google.appengine.api import urlfetch
 from google.appengine.ext.webapp import template
-import feedparser
+
 import os
 import re
 import string
+import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
+from lib import feedparser
 
 class MainHandler(webapp.RequestHandler):
 
