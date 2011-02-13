@@ -5,6 +5,10 @@
     font-size: 0.8em;
   }
 
+  a:hover {
+    color: #ff4500;
+  }
+
   #content {
     width: 100%;
   }
@@ -77,12 +81,12 @@
 
   td.comment_link {
     vertical-align: center;
-    text-align: right;
+    text-align: left;
     padding-right: 5px;
   }
 
   td.comment_link a {
-    background: #cee3f8;
+    background: #f1f7fd;
     color: #346faa;
     text-decoration: none;
     -moz-border-radius: 3px;
@@ -92,5 +96,6 @@
   }
 
   td.comment_link a:hover {
+    background: #cee3f8;
     color: #174370;
   }
