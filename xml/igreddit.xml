@@ -16,6 +16,7 @@
   <UserPref name="imgur" display_name="Open Imgur links in: " datatype="enum" default_value="1">
     <EnumValue value="1" display_value="Imgur"/>
     <EnumValue value="2" display_value="Mirur"/>
+    <EnumValue value="3" display_value="Filmot"/>
   </UserPref>
   <Content type="url" href="http://igreddit.appspot.com" />
 </Module>

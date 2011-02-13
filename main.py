@@ -54,16 +54,20 @@ class MainHandler(webapp.RequestHandler):
         except IndexError:
           external_link = 'http://www.reddit.com/need_to_put_external_links_in_their_rss'
 
-        # Use imgur_switch user prefs and switch link to Mirur if required
-        if str(imgur_switch) == '2':
-          
+        # Use imgur_switch user prefs and switch domain to selected mirror
+        imgur_mirror_id = int(imgur_switch)
+        if imgur_mirror_id > 1:
           try:
             imgur_uri = re.findall(r"imgur\.com\/([A-Za-z0-9\.]+)", external_link)[0]
           except IndexError:
             imgur_uri = None
           
           if imgur_uri is not None:
-            external_link = 'http://i.mirur.net/%s' % (imgur_uri)
+            if imgur_mirror_id == 2:
+              external_link = 'http://i.mirur.net/%s' % (imgur_uri)
+            if imgur_mirror_id == 3:
+              external_link = 'http://i.filmot.com/%s' % (imgur_uri)
+
 
         parsed_story_hash = {
           'full_title' : entry.title_detail.value, # Link alt text

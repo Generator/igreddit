@@ -54,21 +54,28 @@
   /* Stories */
   table {
     width: 100%;
-    padding-top: 10px;
+    padding-top: 5px;
     clear: left;
   }
 
   tr {
-    background: #fff;
-    padding: 0 0 5px 5px;
     overflow: hidden;
   }
 
+  tr.even {
+    background: #f1f7fd;
+  }
+
+  tr.odd {
+    background: #fff;
+  }
+
   td.external_link {
-    width: 90%;
+    width: 100%;
+    padding: 3px;
   }
 
   td.comment_link {
     vertical-align: center;
-    width: 10%;
+    padding-right: 5px;
   }
