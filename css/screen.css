@@ -34,8 +34,8 @@
 
   ul#subreddits li {
     float: left;
-    padding: 5px;
-    margin-right: 3px;
+    padding: 3px;
+    margin-right: 2px;
     font-weight: bold;
   }
 
