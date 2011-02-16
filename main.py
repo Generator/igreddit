@@ -17,6 +17,7 @@
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from google.appengine.api import urlfetch
+from google.appengine.api.urlfetch import Error
 from google.appengine.ext.webapp import template
 
 import os
@@ -28,9 +29,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
 from lib import feedparser
 
 class MainHandler(webapp.RequestHandler):
-
   def get(self):
-      
+   
       # Incoming url parameters
       # iGoogle prepends var names with 'up_' for some reason...
       subreddits = self.request.get('up_subreddits')    # Pipe separated list of subreddits for top menu
@@ -38,45 +38,47 @@ class MainHandler(webapp.RequestHandler):
       imgur_switch = self.request.get('up_imgur', 1)    # Imgur mirror, 1=imgur, 2=mirur, 3=filmot
       feed = self.request.get('r', 'all')               # Current requested subreddit feed
       
-      # Fetch and parse the feed
-      rss = urlfetch.fetch(self.feed_to_url(feed))
-      parsed = feedparser.parse(rss.content)
-      
-      stories = []
+      try:
+        # Fetch and parse the feed
+        rss = urlfetch.fetch(self.feed_to_url(feed))
+        parsed = feedparser.parse(rss.content)
+        stories = []
 
-      for entry in parsed.entries:     
+        for entry in parsed.entries:     
+          comment_count = self.get_comment_count(entry.summary_detail)
+    
+          # Extract the external link url, and transform imgur links to requested mirror
+          external_link = self.transform_url(self.get_external_link(entry.summary_detail), int(imgur_switch))
 
-        comment_count = self.get_comment_count(entry.summary_detail)
-  
-        # Extract the external link url, and transform imgur links to requested mirror
-        external_link = self.transform_url(self.get_external_link(entry.summary_detail), int(imgur_switch))
+          # Build a hash object for each story...
+          parsed_story_hash = {
+            'full_title' : entry.title_detail.value, # Full, non-truncated title just in case
+            'fixed_width_title' : self.truncate(entry.title_detail.value, int(width)),
+            'external_link' :  external_link,
+            'comment_link' : entry.link,
+            'comment_count' : comment_count
+          }
+          
+          # ... and append to the stories list
+          stories.append(parsed_story_hash)
 
-        # Build a hash object for each story...
-        parsed_story_hash = {
-          'full_title' : entry.title_detail.value, # Full, non-truncated title just in case
-          'fixed_width_title' : self.truncate(entry.title_detail.value, int(width)),
-          'external_link' :  external_link,
-          'comment_link' : entry.link,
-          'comment_count' : comment_count
+        # The main data is 'stories'.  Everything else is 
+        # there to persist the URL parameters.
+        template_data = {
+          'subreddits' : subreddits.split('|'),
+          'link_subreddits' : subreddits,
+          'link_imgur' : imgur_switch,
+          'width' : width,
+          'current_feed' : str(feed),
+          'stories' : stories
         }
         
-        # ... and append to the stories list
-        stories.append(parsed_story_hash)
+        # Finally, render the template with the data
+        path = os.path.join(os.path.dirname(__file__), 'index.html')
+        self.response.out.write(template.render(path, template_data))
 
-      # The main data is 'stories'.  Everything else is 
-      # there to persist the URL parameters.
-      template_data = {
-        'subreddits' : subreddits.split('|'),
-        'link_subreddits' : subreddits,
-        'link_imgur' : imgur_switch,
-        'width' : width,
-        'current_feed' : str(feed),
-        'stories' : stories
-      }
-      
-      # Finally, render the template with the data
-      path = os.path.join(os.path.dirname(__file__), 'index.html')
-      self.response.out.write(template.render(path, template_data))
+      except:
+        self.response.out.write('<a style="font-size:1em;font-weight:bold;text-decoration:none;" href="http://www.downforeveryoneorjustme.com/reddit.com">ಠ_ಠ</a>')
 
   def feed_to_url(self, feed):
     ''' Return URL for subreddit feed '''
@@ -124,7 +126,7 @@ class MainHandler(webapp.RequestHandler):
       return headline
 
 def main():
-    application = webapp.WSGIApplication([('/', MainHandler)], debug=False)
+    application = webapp.WSGIApplication([('/', MainHandler)], debug=True)
     util.run_wsgi_app(application)
 
 if __name__ == '__main__':
