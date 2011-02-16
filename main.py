@@ -78,7 +78,7 @@ class MainHandler(webapp.RequestHandler):
         self.response.out.write(template.render(path, template_data))
 
       except:
-        self.response.out.write('<a style="font-size:1em;font-weight:bold;text-decoration:none;" href="http://www.downforeveryoneorjustme.com/reddit.com">ಠ_ಠ</a>')
+        self.response.out.write('<a style="font-size:1em;font-weight:bold;text-decoration:none;" href="http://www.downforeveryoneorjustme.com/reddit.com">is reddit down?</a>')
 
   def feed_to_url(self, feed):
     ''' Return URL for subreddit feed '''
