@@ -40,7 +40,7 @@ class MainHandler(webapp.RequestHandler):
       
       try:
         # Fetch and parse the feed
-        rss = urlfetch.fetch(self.feed_to_url(feed))
+        rss = urlfetch.fetch(self.feed_to_url(feed), headers = {'Cache-Control' : 'max-age=0'})
         parsed = feedparser.parse(rss.content)
         stories = []
 
