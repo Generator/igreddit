@@ -108,12 +108,10 @@ class MainHandler(webapp.RequestHandler):
     else:
       try:
         imgur_uri = re.findall(r"imgur\.com\/([A-Za-z0-9\.]+)", url)[0]
-        
         if mirror_id == 2:
-          url = 'http://i.mirur.net/%s' % (imgur_uri)
-
-        if mirror_id == 3:
           url = 'http://i.filmot.com/%s' % (imgur_uri)
+        if mirror_id == 3:
+          url = 'http://i.filmot.org/%s' % (imgur_uri)
 
         return url
       except:
